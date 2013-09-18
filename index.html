@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Chennai Suburban Rail Map</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+        <script src="transit-osm-min.js"></script>
+
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <style type="text/css">
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #map > #transitplug {
+                z-index: 99;
+                position: absolute;
+                bottom: 1%;
+                font-weight: bold;
+                width: 100%;
+                text-align: center;
+            }
+
+            #transitplug a {
+                color: #800000;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="map" style="width:100%;height:100%;">
+            <div id="transitplug">&copy; <a href="http://onloop.net/" target="_blank">Pranav Ravichandran</a>. <a href="https://github.com/pranavrc/chennairail/" target="_blank">Made</a> with <a href="http://onloop.net/transit/" target="_blank">transit.js</a>. This is a schedule-based map, NOT a live one. No trains run between (roughly) 18:30-23:30 UTC (00:00-05:00 IST).</div>
+        </div>
+
+        <script>
+            var osm = '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>';
+            var tilelayer = L.tileLayer('http://a.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png', {
+                                   attribution: '&copy; OpenCycleMap, ' + 'Map data ' + osm
+                            });
+            var timezone = "+5:30:00";
+            var schedule = "";
+            // Load Sunday schedule if IST is on a Sunday.
+            schedule = (transit.dayInTimezone(timezone) != 0) ? "chennai_rail_schedule.json" :
+                                                                "chennai_rail_schedule_sunday.json";
+            // If client is on a handheld device, increase the refresh interval for responsiveness.
+            if (!transit.isMobileDevice()) {
+                transit.initialize("#map",
+                                   tilelayer,
+                                   "chennai_rail_map.kml",
+                                   "https://raw.github.com/pranavrc/chennairail/gh-pages/chennai_rail_map.kml",
+                                   schedule);
+            } else {
+                transit.initialize("#map",
+                                   tilelayer,
+                                   "chennai_rail_map.kml",
+                                   "https://raw.github.com/pranavrc/chennairail/gh-pages/chennai_rail_map.kml",
+                                   schedule,
+                                   5);
+            }
+
+        </script>
+    </body>
+</html>
