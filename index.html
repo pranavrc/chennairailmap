@@ -4,6 +4,7 @@
     <head>
         <title>Chennai Suburban Rail Map</title>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=false;">
 
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
@@ -58,7 +59,7 @@
                 transit.initialize("#map",
                                    tilelayer,
                                    "chennai_rail_map.kml",
-                                   schedule, false, true,
+                                   schedule, true, true,
                                    5);
             }
 
